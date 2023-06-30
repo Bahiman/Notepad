@@ -8,8 +8,6 @@
 #include "FileReader.h"
 #include  "FileWriter.h"
 
-
-
 Notepad::Notepad(QWidget *parent):
 QMainWindow(parent)
 {
@@ -54,14 +52,20 @@ void Notepad::on_save_bar_clicked()
     try
     {
         auto text = m_field->toPlainText();
+#ifdef _DEBUG
         Logger::LOG(text.toStdString());
+#endif // _DEBUG
+
         FileWriter::updatePath(m_current_path);
         FileWriter::write(text.toStdString());
     }
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+#ifdef _DEBUG
         Logger::LOG("Error: " + std::string(e.what()));
+#endif // _DEBUG
+
     }
 }
 
@@ -73,14 +77,20 @@ void Notepad::on_open_bar_Clicked()
 
         m_current_path = (fileName != "" && fileName != " ") ? fileName.toStdString() : "./log.txt"; 
 
+    #ifdef _DEBUG
         Logger::LOG(m_current_path);
+    #endif // _DEBUG
+
 
         update();
     }
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+#ifdef _DEBUG
         Logger::LOG("Error: " + std::string(e.what()));
+#endif // _DEBUG
+
     }
 }
 
@@ -91,7 +101,10 @@ void Notepad::on_zoom_in_bar_clicked()
         QFont font = m_field->font();
         font.setPointSize(font.pointSize() + 3);
         m_field->setFont(font);
+#ifdef _DEBUG
         Logger::LOG("Zoom in button clicked!");
+#endif // _DEBUG
+
     }
     catch (const std::runtime_error& e)
     {
@@ -103,7 +116,10 @@ void Notepad::on_zoom_out_bar_clicked()
 {
     try
     {
+#ifdef _DEBUG
         Logger::LOG("Zoom out button clicked");
+#endif // _DEBUG
+
         QFont font = m_field->font();
         font.setPointSize(font.pointSize() - 3);
         m_field->setFont(font);
@@ -111,7 +127,9 @@ void Notepad::on_zoom_out_bar_clicked()
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+        #ifdef _DEBUG
         Logger::LOG("Error: " + std::string(e.what()));
+        #endif
     }
 }
 
@@ -120,11 +138,11 @@ void Notepad::setButtons()
     m_button_layout = new QHBoxLayout;
     m_button_layout->addStretch();
     int button_width = this->width() * 0.2;
-    m_save_btn = new QPushButton("Save", this);
-    m_save_btn->setFixedWidth(button_width);
-    m_save_btn->setContentsMargins(30, 0, 0, 0);
-    m_button_layout->addWidget(m_save_btn);
-    m_button_layout->setContentsMargins(0, 15, 20, 0);
+    //m_save_btn = new QPushButton("Save", this);
+    //m_save_btn->setFixedWidth(button_width);
+    //m_save_btn->setContentsMargins(30, 0, 0, 0);
+    //m_button_layout->addWidget(m_save_btn);
+    //m_button_layout->setContentsMargins(0, 15, 20, 0);
     m_field_layout->addLayout(m_button_layout);
 }
 
@@ -151,7 +169,7 @@ void Notepad::setUi()
 
 void Notepad::setConnects()
 {
-    connect(m_save_btn, &QPushButton::clicked,this,&Notepad::on_submit_btn_clicked);
+    //connect(m_save_btn, &QPushButton::clicked,this,&Notepad::on_submit_btn_clicked);
     connect(save, &QAction::triggered, this, &Notepad::on_save_bar_clicked);
     connect(open, &QAction::triggered, this, &Notepad::on_open_bar_Clicked);
     connect(zoom_in, &QAction::triggered, this, &Notepad::on_zoom_in_bar_clicked);
@@ -162,12 +180,18 @@ void Notepad::on_submit_btn_clicked()
 {
     try
     {
+#ifdef _DEBUG
         Logger::LOG("Mess");
+#endif // _DEBUG
+
     } 
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+#ifdef _DEBUG
         Logger::LOG("Error: " + std::string(e.what()));
+#endif // _DEBUG
+
     }
 }
 
@@ -180,8 +204,10 @@ void Notepad::update()
         FileReader::updateContents();
 
         auto& file_contents = FileReader::getContents();
-
+#ifdef _DEBUG
         Logger::LOG(file_contents);
+#endif // _DEBUG
+
 
         m_field->clear();
 
@@ -190,7 +216,10 @@ void Notepad::update()
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+#ifdef _DEBUG
         Logger::LOG("Error: " + std::string(e.what()));
+#endif // _DEBUG
+
     }
 }
     

@@ -7,6 +7,7 @@ void File::updatePath(std::string_view path)
 {
 	if (!std::filesystem::exists(path))
 		throw std::runtime_error("The file doesn't exist(Trying to modify the read path)");
+
 	m_path = path;
 }
 
