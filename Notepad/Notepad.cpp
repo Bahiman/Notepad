@@ -4,13 +4,19 @@
 #include<qtoolbutton.h>
 #include<qtoolbar.h>
 #include"Logger.h"
+#include <QFileDialog>
+#include "FileReader.h"
+#include  "FileWriter.h"
 
-Notepad::Notepad(QWidget *parent)
-    :QMainWindow(parent)
+
+
+Notepad::Notepad(QWidget *parent):
+QMainWindow(parent)
 {
     ui.setupUi(this);
     setUi();
     setConnects();
+    update();
     this->setWindowTitle("Sample.txt");
 }           
 
@@ -41,17 +47,21 @@ void Notepad::setNavbar()
     nav_bar->addWidget(zoom_in_btn);
     nav_bar->addWidget(zoom_out_btn);
     this->addToolBar(nav_bar);
-}
+}         
 
 void Notepad::on_save_bar_clicked()
 {
     try
     {
-        Logger::LOG("Save button clicked!");
+        auto text = m_field->toPlainText();
+        Logger::LOG(text.toStdString());
+        FileWriter::updatePath(m_current_path);
+        FileWriter::write(text.toStdString());
     }
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+        Logger::LOG("Error: " + std::string(e.what()));
     }
 }
 
@@ -59,11 +69,18 @@ void Notepad::on_open_bar_Clicked()
 {
     try
     {
-        Logger::LOG("Open button clicked!");
+        auto fileName = QFileDialog::getOpenFileName(this, tr("Choose file: "));
+
+        m_current_path = (fileName != "" && fileName != " ") ? fileName.toStdString() : "./log.txt"; 
+
+        Logger::LOG(m_current_path);
+
+        update();
     }
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+        Logger::LOG("Error: " + std::string(e.what()));
     }
 }
 
@@ -71,6 +88,9 @@ void Notepad::on_zoom_in_bar_clicked()
 {
     try
     {
+        QFont font = m_field->font();
+        font.setPointSize(font.pointSize() + 3);
+        m_field->setFont(font);
         Logger::LOG("Zoom in button clicked!");
     }
     catch (const std::runtime_error& e)
@@ -84,10 +104,14 @@ void Notepad::on_zoom_out_bar_clicked()
     try
     {
         Logger::LOG("Zoom out button clicked");
+        QFont font = m_field->font();
+        font.setPointSize(font.pointSize() - 3);
+        m_field->setFont(font);
     }
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+        Logger::LOG("Error: " + std::string(e.what()));
     }
 }
 
@@ -104,11 +128,12 @@ void Notepad::setButtons()
     m_field_layout->addLayout(m_button_layout);
 }
 
+// rabotayet) ostalos tolko dobavit edit fayla i vse gotovo a eshe budet proverka na esli fayl bil izmenen ili net
+//nakonecto viju ranshe ne mog videt to chto ti pisal
 void Notepad::setFields()
 {
     m_field = new QPlainTextEdit(this);
     m_field->setReadOnly(false);
-    m_field->insertPlainText("Open a document...");
     m_field_layout->addWidget(m_field);
 }
 
@@ -142,5 +167,30 @@ void Notepad::on_submit_btn_clicked()
     catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << " :(";
+        Logger::LOG("Error: " + std::string(e.what()));
     }
 }
+
+void Notepad::update()
+{
+    try
+    {
+        FileReader::updatePath(m_current_path);
+
+        FileReader::updateContents();
+
+        auto& file_contents = FileReader::getContents();
+
+        Logger::LOG(file_contents);
+
+        m_field->clear();
+
+        m_field->setPlainText(QString::fromStdString(file_contents));
+    }
+    catch (const std::runtime_error& e)
+    {
+        std::cerr << e.what() << " :(";
+        Logger::LOG("Error: " + std::string(e.what()));
+    }
+}
+    

@@ -12,7 +12,7 @@ class Notepad : public QMainWindow
     Q_OBJECT
 
 private:
-
+    std::string m_current_path = "./log.txt";
     Ui::NotepadClass ui;
     QPlainTextEdit* m_field;
     QVBoxLayout* m_field_layout;
@@ -33,6 +33,8 @@ private:
     void setUi();
     void setConnects();
     void on_submit_btn_clicked();
+    void update();
+    bool saved = true;
 public:
     Notepad(QWidget* parent = nullptr);
     ~Notepad();

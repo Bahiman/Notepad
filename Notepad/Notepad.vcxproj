@@ -99,6 +99,9 @@
     <QtRcc Include="Notepad.qrc" />
     <QtUic Include="..\..\..\..\Downloads\Notepad.ui" />
     <QtMoc Include="Notepad.h" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="FileWriter.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Notepad.cpp" />
     <ClCompile Include="main.cpp" />
@@ -107,6 +110,9 @@
     <Text Include="log.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="File.h" />
+    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="FileWriter.h" />
     <ClInclude Include="Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
