@@ -14,7 +14,6 @@ void FileReader::updateContents()
 
 	std::string temp;
 
-	// this is a very regular ass comment that I am just doing cuz my mom
 
 	m_file_contents.clear();
 
@@ -33,5 +32,5 @@ const std::string& FileReader::getContents()
 bool FileReader::changed(std::string_view old_data)
 {
 	return getContents() == old_data;
-	// oh yay makeda and also set the fuck down t sereis I am here to spill the real tea we a re atring to get through me for spotting number one but you inida you lose so bad things that you have doen when we have only just 
+	
 }
