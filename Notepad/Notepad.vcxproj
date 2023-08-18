@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="WordCounter.cpp" />
     <QtRcc Include="Notepad.qrc" />
     <QtUic Include="..\..\..\..\Downloads\Notepad.ui" />
     <QtMoc Include="Notepad.h" />
@@ -114,6 +115,8 @@
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="FileWriter.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="ThreadPool.h" />
+    <QtMoc Include="WordCounter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

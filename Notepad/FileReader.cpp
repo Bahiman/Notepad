@@ -1,7 +1,9 @@
 #include "FileReader.h"
 #include <filesystem>
+
 #include <fstream>
-	
+
+
 void FileReader::updateContents()
 {
 	if (!is_good())
@@ -32,5 +34,5 @@ const std::string& FileReader::getContents()
 bool FileReader::changed(std::string_view old_data)
 {
 	return getContents() == old_data;
-	
 }
+
